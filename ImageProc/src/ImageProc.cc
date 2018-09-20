@@ -49,7 +49,5 @@ bool ImageProc::Init()
 
 void ImageProc::Detect(const cv::Mat& image, std::vector<Object>& objects)
 {
-  LOG(INFO) << "111 ";
   detector_->Detect(image, objects);
-  LOG(INFO) << "112 ";
 }
