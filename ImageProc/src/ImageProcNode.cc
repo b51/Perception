@@ -68,7 +68,6 @@ bool ImageProcNode::Init()
 
 bool ImageProcNode::CameraInit(int index, int w, int h)
 {
-  /*
   cap_.open(index);
 
   if (!cap_.isOpened())
@@ -79,7 +78,6 @@ bool ImageProcNode::CameraInit(int index, int w, int h)
 
   cap_.set(CV_CAP_PROP_FRAME_WIDTH, w);
   cap_.set(CV_CAP_PROP_FRAME_HEIGHT, h);
-  */
   LOG(INFO) << "Camera "<< index <<" inited";
   LOG(INFO) << "width: " << w << " height: " << h;
 
@@ -117,8 +115,8 @@ void ImageProcNode::Run()
 
   while (node_handle_.ok())
   {
-    //cap_ >> image;
-    image = cv::imread("/home/compiler/Pictures/Lenna.png");
+    cap_ >> image;
+    //image = cv::imread("/home/compiler/Pictures/Lenna.png");
 
 #if DEBUG
     count++;
