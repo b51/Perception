@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+
+              Author: b51
+                Mail: b51live@gmail.com
+            FileName: ImageProcNode.launch
+
+          Created On: Mon 11 Dec 2017 12:56:39 AM CST
+     Licensed under The MIT License [see LICENSE for details]
+-->
+
+<launch>
+  <node name="ImageProcNode" pkg="ImageProcNode"
+      type="ImageProcNode" args="
+          -configuration_directory $(find ImageProcNode)/config
+          -configuration_basename ConfigVision.lua"
+      output="screen">
+  </node>
+
+</launch>

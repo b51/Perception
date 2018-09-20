@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package>
+  <name>ImageProcNode</name>
+  <version>0.1.0</version>
+  <description>The ImageProcNode package</description>
+
+  <maintainer email="b51live@gmail.com">b51</maintainer>
+
+  <license>MIT</license>
+
+  <build_depend>roscpp</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>image_transport</build_depend>
+  <build_depend>GoogleDeps</build_depend>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <run_depend>roscpp</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>sensor_msgs</run_depend>
+  <run_depend>image_transport</run_depend>
+
+
+  <!--
+  <export>
+    <nodelet plugin="${prefix}/plugins/nodelet_plugins.xml" />
+  </export>
+  -->
+</package>
