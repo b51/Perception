@@ -52,25 +52,19 @@ ImageProcNode::~ImageProcNode()
 
 bool ImageProcNode::Init()
 {
-  /* Init vision shm */
-  int ret = vision_shm_open();
+  /* Open shms */
+  int ret;
+  ret = vision_shm_open();
   if (ret < 0)
-    LOG(ERROR) << "Could not open vision shm";
+    LOG(ERROR) << "Vision shm open falied.";
   else
-    LOG(INFO) << "Vision shm opened";
+    LOG(INFO) << "Vision shm opend.";
 
-  for (auto const& vision_key : vision_keys)
-  {
-    LOG(INFO) << "Setting up vision key: "
-        << vision_key.first << "[" << vision_key.second.size << "]";
-    int nval = vision_key.second.size;
-
-    double* pr = vision_shm_set_ptr(vision_key.first, nval);
-    for (int i = 0; i < nval; i++)
-    {
-      *(pr + i) = 0.;   // Init all shm data to 0.
-    }
-  }
+  ret = world_shm_open();
+  if (ret < 0)
+    LOG(ERROR) << "World shm open falied.";
+  else
+    LOG(INFO) << "World shm opend.";
 
   /* Init Camera */
   if (!CameraInit(options_.camera_index
@@ -162,7 +156,7 @@ void ImageProcNode::Run()
   std::vector<Object> objs;
   //ikid_msgs::ObjectList list2pub;
 
-#if DEBUG
+#ifdef DEBUG
   int count = 0;
   auto start = std::chrono::high_resolution_clock::now();
 #endif
@@ -172,7 +166,7 @@ void ImageProcNode::Run()
     cap_ >> image;
     //image = cv::imread("/home/compiler/Pictures/Lenna.png");
 
-#if DEBUG
+#ifdef DEBUG
     count++;
     auto finish = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = finish - start;
