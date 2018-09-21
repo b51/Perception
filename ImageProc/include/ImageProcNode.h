@@ -9,7 +9,8 @@
 *
 ************************************************************************/
 
-#include "ImageProc.h"
+#ifndef IKID_VISION_IMAGE_PROC_NODE_H_
+#define IKID_VISION_IMAGE_PROC_NODE_H_
 
 #include <stdio.h>
 #include <iostream>
@@ -21,7 +22,11 @@
 
 #include <image_transport/image_transport.h>
 
-namespace ikid
+#include "shm_util.h"
+#include "VisionOptions.h"
+#include "DarknetDetection.h"
+
+namespace IKid
 {
 
 namespace Vision
@@ -42,6 +47,9 @@ public:
 
   void Run();
 
+private:
+  void UpdateShm(const std::vector<Object>& objs);
+
 public:
   ::ros::NodeHandle node_handle_;
   ::ros::Publisher object_list_publisher_;
@@ -53,9 +61,11 @@ public:
 
   image_transport::ImageTransport it_;
 
-  ImageProc *image_proc_;
-  DarknetDetection *darknet_detector_;
+private:
+  std::unique_ptr<Detector> detector_;
 };
 
-}
-}
+} // namespace Vision
+} // namespace IKid
+
+#endif  // IKID_VISION_IMAGE_PROC_NODE_H_

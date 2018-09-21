@@ -9,11 +9,14 @@
 *
 ************************************************************************/
 
+#ifndef IKID_VISION_IMAGE_PROC_DETECTOR_H_
+#define IKID_VISION_IMAGE_PROC_DETECTOR_H_
+
 #include <iostream>
 
 #include <opencv2/opencv.hpp>
 
-namespace ikid
+namespace IKid
 {
 
 namespace Vision
@@ -40,6 +43,7 @@ public:
   virtual bool Detect(const cv::Mat& image, std::vector<Object>& objects) = 0;
 };
 
-}
+} // namespace Vision
+} // namespace IKid
 
-}
+#endif  // IKID_VISION_IMAGE_PROC_DETECTOR_H_

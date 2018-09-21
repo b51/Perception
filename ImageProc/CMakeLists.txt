@@ -30,6 +30,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   sensor_msgs
   GoogleDeps
+  Shm
 )
 
 find_package(Boost REQUIRED)
@@ -104,7 +105,6 @@ include_directories(
 add_executable(${PROJECT_NAME}
   src/${PROJECT_NAME}Main.cc
   src/${PROJECT_NAME}.cc
-  src/ImageProc.cc
   src/DarknetDetection.cc
 )
 

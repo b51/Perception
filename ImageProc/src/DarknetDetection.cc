@@ -13,7 +13,7 @@
 
 using namespace std;
 
-namespace ikid
+namespace IKid
 {
 namespace Vision
 {
@@ -138,4 +138,4 @@ float* DarknetDetection::Mat2Float(const cv::Mat& image)
 }
 
 } // namespace Vision
-} // namespace ikid
+} // namespace IKid

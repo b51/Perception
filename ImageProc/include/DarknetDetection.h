@@ -9,8 +9,8 @@
 *
 ************************************************************************/
 
-#ifndef VISION_IMAGE_PROC_DARKNET_DETECTION_H_
-#define VISION_IMAGE_PROC_DARKNET_DETECTION_H_
+#ifndef IKID_VISION_IMAGE_PROC_DARKNET_DETECTION_H_
+#define IKID_VISION_IMAGE_PROC_DARKNET_DETECTION_H_
 
 #include <iostream>
 #include <algorithm>
@@ -24,7 +24,7 @@
 
 using namespace std;
 
-namespace ikid
+namespace IKid
 {
 
 namespace Vision
@@ -60,6 +60,6 @@ private:
 };
 
 } // namespace Vision
-} // namespace ikid
+} // namespace IKid
 
-#endif
+#endif  // IKID_VISION_IMAGE_PROC_DARKNET_DETECTION_H_

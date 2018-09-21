@@ -11,7 +11,7 @@
 
 #include "ImageProcNode.h"
 
-using namespace ikid;
+using namespace IKid;
 using namespace Vision;
 
 DEFINE_string(configuration_directory, "",
@@ -36,7 +36,9 @@ int main(int argc, char **argv)
   VisionOptions vision_options =
         LoadOptions(FLAGS_configuration_directory, FLAGS_configuration_basename);
 
-  FLAGS_stderrthreshold = vision_options.log_level;
+  FLAGS_minloglevel = vision_options.log_level;
+  FLAGS_logtostderr = true;
+  FLAGS_colorlogtostderr = true;
 
   ::ros::init(argc, argv, "ImageProcNode");
   ::ros::start();

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef CONFIG_VISION_OPTIONS_H_
-#define CONFIG_VISION_OPTIONS_H_
+#ifndef IKID_VISION_IMAGE_PROC_VISION_OPTIONS_H_
+#define IKID_VISION_IMAGE_PROC_VISION_OPTIONS_H_
 
 #include <string>
 #include <vector>
@@ -26,7 +26,7 @@
 #include "cartographer/common/make_unique.h"
 #include "cartographer/common/port.h"
 
-namespace ikid
+namespace IKid
 {
 namespace Vision
 {
@@ -96,6 +96,6 @@ inline VisionOptions LoadOptions(const std::string& configuration_directory
 }
 
 } // namespace Vision
-} // namespace ikid
+} // namespace IKid
 
-#endif // CONFIG_VISION_OPTIONS_H_
+#endif // IKID_VISION_IMAGE_PROC_VISION_OPTIONS_H_

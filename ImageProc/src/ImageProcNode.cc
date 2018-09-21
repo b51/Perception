@@ -11,8 +11,10 @@
 
 #include "ImageProcNode.h"
 
-using namespace ikid;
-using namespace Vision;
+namespace IKid
+{
+namespace Vision
+{
 
 ImageProcNode::ImageProcNode(const VisionOptions& options):
   options_(options)
@@ -44,24 +46,51 @@ ImageProcNode::ImageProcNode(const VisionOptions& options):
 
 ImageProcNode::~ImageProcNode()
 {
-  if (image_proc_)
-  {
-    delete image_proc_;
-    image_proc_ = nullptr;
-  }
+  if (detector_)
+    detector_.reset(nullptr);
 }
 
 bool ImageProcNode::Init()
 {
+  /* Init vision shm */
+  int ret = vision_shm_open();
+  if (ret < 0)
+    LOG(ERROR) << "Could not open vision shm";
+  else
+    LOG(INFO) << "Vision shm opened";
+
+  for (auto const& vision_key : vision_keys)
+  {
+    LOG(INFO) << "Setting up vision key: "
+        << vision_key.first << "[" << vision_key.second.size << "]";
+    int nval = vision_key.second.size;
+
+    double* pr = vision_shm_set_ptr(vision_key.first, nval);
+    for (int i = 0; i < nval; i++)
+    {
+      *(pr + i) = 0.;   // Init all shm data to 0.
+    }
+  }
+
+  /* Init Camera */
   if (!CameraInit(options_.camera_index
                 , options_.image_width
                 , options_.image_height))
     return false;
 
-  image_proc_ = new ImageProc(options_);
+  /* Init Detector */
+  std::unique_ptr<DarknetDetection>darknet_detector =
+      cartographer::common::make_unique<DarknetDetection>();
+  if (darknet_detector)
+  {
+    darknet_detector->SetNetParams(options_.object_thresh
+                                 , options_.nms_thresh
+                                 , options_.hier_thresh);
 
-  if (!image_proc_->Init())
-    return false;
+    darknet_detector->LoadModel(const_cast<char*>(options_.net_prototxt.c_str())
+                              , const_cast<char*>(options_.model_file.c_str()));
+    detector_ = std::move(darknet_detector);
+  }
 
   return true;
 }
@@ -101,6 +130,31 @@ void ImageProcNode::ListToRosMsg(const std::vector<Object>& in, ikid_msgs::Objec
   }
 }
 */
+
+void ImageProcNode::UpdateShm(const std::vector<Object>& objs)
+{
+  for (const auto& obj : objs)
+  {
+    double v[4] = {obj.x*1., obj.y*1., obj.width*1., obj.height*1.};
+    switch (obj.label)
+    {
+      case 0:       //TODO for ball
+      {
+        double* pr = vision_shm_set_ptr(ball_bbox_key, vision_keys[ball_bbox_key].size);
+        for (int i = 0; i < vision_keys[ball_bbox_key].size; i++)
+          *(pr+i) = v[i];
+        break;
+      }
+      case 1:       //TODO for goal
+      {
+        double* pr = vision_shm_set_ptr(goal_bbox_key, vision_keys[goal_bbox_key].size);
+        for (int i = 0; i < vision_keys[goal_bbox_key].size; i++)
+          *(pr+i) = v[i];
+        break;
+      }
+    }
+  }
+}
 
 void ImageProcNode::Run()
 {
@@ -147,7 +201,7 @@ void ImageProcNode::Run()
 #endif
 
     objs.clear();
-    image_proc_->Detect(image, objs);
+    detector_->Detect(image, objs);
 
     /*
     list2pub.header.stamp = ::ros::Time::now();
@@ -157,3 +211,7 @@ void ImageProcNode::Run()
     */
   }
 }
+
+
+} // namespace Vision
+} // namespace IKid
