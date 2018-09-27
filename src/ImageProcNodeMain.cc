@@ -12,7 +12,7 @@
 #include "ImageProcNode.h"
 
 using namespace IKid;
-using namespace Vision;
+using namespace Perception;
 
 DEFINE_string(configuration_directory, "",
                   "First directory in which configuration files are searched, "

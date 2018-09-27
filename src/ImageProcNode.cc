@@ -13,7 +13,7 @@
 
 namespace IKid
 {
-namespace Vision
+namespace Perception
 {
 
 ImageProcNode::ImageProcNode(const VisionOptions& options):
@@ -207,5 +207,5 @@ void ImageProcNode::Run()
 }
 
 
-} // namespace Vision
+} // namespace Perception
 } // namespace IKid

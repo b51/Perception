@@ -28,7 +28,7 @@
 
 namespace IKid
 {
-namespace Vision
+namespace Perception
 {
 
 struct VisionOptions
@@ -95,7 +95,7 @@ inline VisionOptions LoadOptions(const std::string& configuration_directory
   return CreateVisionOptions(&lua_parameter_dictionary);
 }
 
-} // namespace Vision
+} // namespace Perception
 } // namespace IKid
 
 #endif // IKID_VISION_IMAGE_PROC_VISION_OPTIONS_H_

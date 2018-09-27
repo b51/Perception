@@ -19,7 +19,7 @@
 namespace IKid
 {
 
-namespace Vision
+namespace Perception
 {
 
 typedef struct
@@ -43,7 +43,7 @@ public:
   virtual bool Detect(const cv::Mat& image, std::vector<Object>& objects) = 0;
 };
 
-} // namespace Vision
+} // namespace Perception
 } // namespace IKid
 
 #endif  // IKID_VISION_IMAGE_PROC_DETECTOR_H_

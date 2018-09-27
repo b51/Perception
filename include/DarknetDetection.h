@@ -27,7 +27,7 @@ using namespace std;
 namespace IKid
 {
 
-namespace Vision
+namespace Perception
 {
 
 class DarknetDetection: public Detector
@@ -59,7 +59,7 @@ private:
   float hier_thresh_;
 };
 
-} // namespace Vision
+} // namespace Perception
 } // namespace IKid
 
 #endif  // IKID_VISION_IMAGE_PROC_DARKNET_DETECTION_H_

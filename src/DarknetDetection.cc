@@ -15,7 +15,7 @@ using namespace std;
 
 namespace IKid
 {
-namespace Vision
+namespace Perception
 {
 
 DarknetDetection::DarknetDetection()
@@ -137,5 +137,5 @@ float* DarknetDetection::Mat2Float(const cv::Mat& image)
   return rgb;
 }
 
-} // namespace Vision
+} // namespace Perception
 } // namespace IKid

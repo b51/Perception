@@ -29,7 +29,7 @@
 namespace IKid
 {
 
-namespace Vision
+namespace Perception
 {
 
 class ImageProcNode
@@ -65,7 +65,7 @@ private:
   std::unique_ptr<Detector> detector_;
 };
 
-} // namespace Vision
+} // namespace Perception
 } // namespace IKid
 
 #endif  // IKID_VISION_IMAGE_PROC_NODE_H_
