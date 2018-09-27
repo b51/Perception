@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>ImageProcNode</name>
+  <name>PerceptionNode</name>
   <version>0.1.0</version>
-  <description>The ImageProcNode package</description>
+  <description>The PerceptionNode package</description>
 
   <maintainer email="b51live@gmail.com">b51</maintainer>
 

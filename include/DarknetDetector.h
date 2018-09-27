@@ -2,15 +2,15 @@
 *
 *              Author: b51
 *                Mail: b51live@gmail.com
-*            FileName: DarknetDetection.h
+*            FileName: DarknetDetector.h
 *
 *          Created On: Tue 19 Dec 2017 01:02:29 AM CST
 *     Licensed under The MIT License [see LICENSE for details]
 *
 ************************************************************************/
 
-#ifndef IKID_VISION_IMAGE_PROC_DARKNET_DETECTION_H_
-#define IKID_VISION_IMAGE_PROC_DARKNET_DETECTION_H_
+#ifndef IKID_PERCEPTION_DARKNET_DETECTOR_H_
+#define IKID_PERCEPTION_DARKNET_DETECTOR_H_
 
 #include <iostream>
 #include <algorithm>
@@ -30,11 +30,11 @@ namespace IKid
 namespace Perception
 {
 
-class DarknetDetection: public Detector
+class DarknetDetector: public Detector
 {
 public:
-  DarknetDetection();
-  ~DarknetDetection();
+  DarknetDetector();
+  ~DarknetDetector();
 
   void LoadModel(char* cfg_file, char* weights_file);
 

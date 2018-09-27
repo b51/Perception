@@ -2,14 +2,14 @@
 *
 *              Author: b51
 *                Mail: b51live@gmail.com
-*            FileName: ImageProcNodeMain.cc
+*            FileName: PerceptionNodeMain.cc
 *
-*          Created On: Fri 15 Dec 2017 09:11:18 PM CST
+*          Created On: Thu 27 Sep 2018 03:56:46 PM CST
 *     Licensed under The MIT License [see LICENSE for details]
 *
 ************************************************************************/
 
-#include "ImageProcNode.h"
+#include "PerceptionNode.h"
 
 using namespace IKid;
 using namespace Perception;
@@ -33,20 +33,20 @@ int main(int argc, char **argv)
   CHECK(!FLAGS_configuration_basename.empty())
       << "-configuration_basename is missing.";
 
-  VisionOptions vision_options =
+  PerceptionOptions options =
         LoadOptions(FLAGS_configuration_directory, FLAGS_configuration_basename);
 
-  FLAGS_minloglevel = vision_options.log_level;
+  FLAGS_minloglevel = options.log_level;
   FLAGS_logtostderr = true;
   FLAGS_colorlogtostderr = true;
 
-  ::ros::init(argc, argv, "ImageProcNode");
+  ::ros::init(argc, argv, "PerceptionNode");
   ::ros::start();
 
   //::ScopedRosLogSink ros_log_sink;
-  ImageProcNode image_proc_node(vision_options);
-  image_proc_node.Init();
-  image_proc_node.Run();
+  PerceptionNode perception_node(options);
+  perception_node.Init();
+  perception_node.Run();
 
   ::ros::shutdown();
 }

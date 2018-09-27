@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef IKID_VISION_IMAGE_PROC_VISION_OPTIONS_H_
-#define IKID_VISION_IMAGE_PROC_VISION_OPTIONS_H_
+#ifndef IKID_PERCEPTION_PERCEPTION_OPTIONS_H_
+#define IKID_PERCEPTION_PERCEPTION_OPTIONS_H_
 
 #include <string>
 #include <vector>
@@ -31,7 +31,7 @@ namespace IKid
 namespace Perception
 {
 
-struct VisionOptions
+struct PerceptionOptions
 {
   bool debug_mode;
   int log_level;
@@ -57,10 +57,10 @@ struct VisionOptions
 
 namespace carto = cartographer;
 
-inline VisionOptions CreateVisionOptions(carto::common::LuaParameterDictionary* const
+inline PerceptionOptions CreatePerceptionOptions(carto::common::LuaParameterDictionary* const
                                   lua_parameter_dictionary)
 {
-  VisionOptions options;
+  PerceptionOptions options;
 
   options.debug_mode = lua_parameter_dictionary->GetBool("debug_mode");
   options.log_level = lua_parameter_dictionary->GetInt("log_level");
@@ -81,8 +81,8 @@ inline VisionOptions CreateVisionOptions(carto::common::LuaParameterDictionary* 
   return options;
 }
 
-inline VisionOptions LoadOptions(const std::string& configuration_directory
-                        , const std::string& configuration_basename)
+inline PerceptionOptions LoadOptions(const std::string& configuration_directory
+                                   , const std::string& configuration_basename)
 {
   auto file_resolver = carto::common::make_unique<
       carto::common::ConfigurationFileResolver>(
@@ -92,10 +92,10 @@ inline VisionOptions LoadOptions(const std::string& configuration_directory
   carto::common::LuaParameterDictionary lua_parameter_dictionary(
       code, std::move(file_resolver));
 
-  return CreateVisionOptions(&lua_parameter_dictionary);
+  return CreatePerceptionOptions(&lua_parameter_dictionary);
 }
 
 } // namespace Perception
 } // namespace IKid
 
-#endif // IKID_VISION_IMAGE_PROC_VISION_OPTIONS_H_
+#endif // IKID_PERCEPTION_PERCEPTION_OPTIONS_H_

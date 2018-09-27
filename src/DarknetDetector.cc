@@ -2,14 +2,14 @@
 *
 *              Author: b51
 *                Mail: b51live@gmail.com
-*            FileName: DarknetDetection.cc
+*            FileName: DarknetDetector.cc
 *
 *          Created On: Tue 19 Dec 2017 01:15:26 AM CST
 *     Licensed under The MIT License [see LICENSE for details]
 *
 ************************************************************************/
 
-#include "DarknetDetection.h"
+#include "DarknetDetector.h"
 
 using namespace std;
 
@@ -18,15 +18,15 @@ namespace IKid
 namespace Perception
 {
 
-DarknetDetection::DarknetDetection()
+DarknetDetector::DarknetDetector()
 {
 }
 
-DarknetDetection::~DarknetDetection()
+DarknetDetector::~DarknetDetector()
 {
 }
 
-void DarknetDetection::RescaleBoxes(const cv::Mat& image, int num, box *boxes)
+void DarknetDetector::RescaleBoxes(const cv::Mat& image, int num, box *boxes)
 {
   int w = image.cols;
   int h = image.rows;
@@ -50,7 +50,7 @@ void DarknetDetection::RescaleBoxes(const cv::Mat& image, int num, box *boxes)
   }
 }
 
-bool DarknetDetection::Detect(const cv::Mat& image, vector<Object>& objects)
+bool DarknetDetector::Detect(const cv::Mat& image, vector<Object>& objects)
 {
   cv::Mat resized_image;
   cv::resize(image, resized_image, cv::Size(net_->w, net_->h));
@@ -104,7 +104,7 @@ bool DarknetDetection::Detect(const cv::Mat& image, vector<Object>& objects)
   }
 }
 
-void DarknetDetection::LoadModel(char* cfg_file, char* weights_file)
+void DarknetDetector::LoadModel(char* cfg_file, char* weights_file)
 {
   LOG(INFO) << cfg_file;
   net_ = parse_network_cfg(cfg_file);
@@ -114,7 +114,7 @@ void DarknetDetection::LoadModel(char* cfg_file, char* weights_file)
   }
 }
 
-float* DarknetDetection::Mat2Float(const cv::Mat& image)
+float* DarknetDetector::Mat2Float(const cv::Mat& image)
 {
   int w = image.cols;
   int h = image.rows;

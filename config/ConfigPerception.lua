@@ -2,20 +2,20 @@
 --
 --              Author: b51
 --                Mail: b51live@gmail.com
---            FileName: ConfigVision.lua
+--            FileName: ConfigPerception.lua
 --
 --          Created On: Mon 11 Dec 2017 12:03:40 AM CST
 --     Licensed under The MIT License [see LICENSE for details]
 --
 --########################################################################
 
-local cmd = io.popen("rospack find ImageProcNode");
+local cmd = io.popen("rospack find PerceptionNode");
 local result = cmd:read("*a");
 cmd.close();
 local s = string.gsub(result, '%s+$', '')
 local data_path = s.."/data/";
 
-vision_options =
+perception_options =
 {
   camera_index = 0,
   image_width = 640,
@@ -34,4 +34,4 @@ vision_options =
   log_level = 0,
 }
 
-return vision_options;
+return perception_options;

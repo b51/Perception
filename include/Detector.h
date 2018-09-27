@@ -9,8 +9,8 @@
 *
 ************************************************************************/
 
-#ifndef IKID_VISION_IMAGE_PROC_DETECTOR_H_
-#define IKID_VISION_IMAGE_PROC_DETECTOR_H_
+#ifndef IKID_PERCEPTION_DETECTOR_H_
+#define IKID_PERCEPTION_DETECTOR_H_
 
 #include <iostream>
 

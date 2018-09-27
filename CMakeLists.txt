@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.12)
-project(ImageProcNode)
+project(PerceptionNode)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
 add_definitions(-std=c++11)
@@ -105,7 +105,8 @@ include_directories(
 add_executable(${PROJECT_NAME}
   src/${PROJECT_NAME}Main.cc
   src/${PROJECT_NAME}.cc
-  src/DarknetDetection.cc
+  src/ImageProc.cc
+  src/DarknetDetector.cc
 )
 
 target_link_libraries(${PROJECT_NAME}
