@@ -17,11 +17,13 @@
 
 #include <ros/ros.h>
 #include <image_transport/image_transport.h>
+#include <tf2_ros/transform_listener.h>
 #include <glog/logging.h>
 
 #include "shm_util.h"
-#include "PerceptionOptions.h"
 #include "ImageProc.h"
+#include "Observation.h"
+#include "PerceptionOptions.h"
 
 namespace IKid
 {
@@ -50,6 +52,7 @@ private:
   PerceptionOptions options_;
   cv::VideoCapture cap_;
   std::unique_ptr<ImageProc> image_proc_;
+  std::unique_ptr<Observation> observation_;
 };
 
 } // namespace Perception

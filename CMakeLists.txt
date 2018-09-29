@@ -26,9 +26,11 @@ endif(CMAKE_BUILD_TYPE STREQUAL "Release")
 
 find_package(catkin REQUIRED COMPONENTS
   roscpp
+  tf2_ros
   image_transport
   std_msgs
   sensor_msgs
+  geometry_msgs
   GoogleDeps
   Shm
 )
@@ -76,8 +78,10 @@ find_package(Ceres REQUIRED)
 catkin_package(
   INCLUDE_DIRS include
   CATKIN_DEPENDS roscpp
+                 tf2_ros
                  std_msgs
                  sensor_msgs
+                 geometry_msgs
                  image_transport
   DEPENDS Boost OpenCV
 )
@@ -107,6 +111,9 @@ add_executable(${PROJECT_NAME}
   src/${PROJECT_NAME}.cc
   src/ImageProc.cc
   src/DarknetDetector.cc
+  src/Observation.cc
+  src/tf_bridge.cc
+  src/time_conversion.cc
 )
 
 target_link_libraries(${PROJECT_NAME}

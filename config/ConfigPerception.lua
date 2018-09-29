@@ -15,11 +15,16 @@ cmd.close();
 local s = string.gsub(result, '%s+$', '')
 local data_path = s.."/data/";
 
-perception_options =
+OBSERVATION =
 {
-  camera_index = 0,
-  image_width = 640,
-  image_height = 480,
+  ball_diameter = 0.15,
+  camera_focus = 456,
+  tracking_frame = "base_link",
+  lookup_transform_timeout_sec = 1.0,
+}
+
+IMAGE_PROC =
+{
   net_input_width = 128,
   net_input_height = 128,
 
@@ -29,9 +34,19 @@ perception_options =
   nms_thresh = 0.2,
   hier_thresh = 0.5,
   log_interval = 120, -- second
+}
 
+perception_options =
+{
   debug_mode = false,
   log_level = 0,
+
+  camera_index = 0,
+  image_width = 640,
+  image_height = 480,
+
+  image_proc = IMAGE_PROC,
+  observation = OBSERVATION,
 }
 
 return perception_options;

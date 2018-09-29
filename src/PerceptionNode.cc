@@ -21,19 +21,10 @@ PerceptionNode::PerceptionNode(const PerceptionOptions& options)
     , it_(node_handle_)
 {
   LOG(INFO) << "debug_mode       : " << options_.debug_mode;
+  LOG(INFO) << "log_level        : " << options_.log_level;
   LOG(INFO) << "camera_index     : " << options_.camera_index;
   LOG(INFO) << "image_width      : " << options_.image_width;
   LOG(INFO) << "image_height     : " << options_.image_height;
-  LOG(INFO) << "net_input_width  : " << options_.net_input_width;
-  LOG(INFO) << "net_input_height : " << options_.net_input_height;
-  LOG(INFO) << "topic            : " << options_.object_list_topic;
-  LOG(INFO) << "queue            : " << options_.object_list_publisher_queue_size;
-
-  LOG(INFO) << "net_prototxt     : " << options_.net_prototxt;
-  LOG(INFO) << "model_file       : " << options_.model_file;
-  LOG(INFO) << "object_thresh    : " << options_.object_thresh;
-  LOG(INFO) << "nms_thresh       : " << options_.nms_thresh;
-  LOG(INFO) << "hier_thresh      : " << options_.hier_thresh;
 }
 
 PerceptionNode::~PerceptionNode()
@@ -64,7 +55,14 @@ void PerceptionNode::Init()
                << " with width: " << options_.image_width
                << " height: " << options_.image_height;
   /* Init ImageProc */
-  image_proc_ = cartographer::common::make_unique<ImageProc>(options_);
+  image_proc_ = cartographer::common::make_unique<ImageProc>(options_.image_proc_options);
+
+  /* Init Observation */
+  constexpr double kTfBufferCacheTimeInSeconds = 10.;
+  tf2_ros::Buffer tf_buffer{::ros::Duration(kTfBufferCacheTimeInSeconds)};
+  tf2_ros::TransformListener tf(tf_buffer);
+
+  observation_ = cartographer::common::make_unique<Observation>(options_.observation_options, &tf_buffer);
 }
 
 bool PerceptionNode::CameraInit(int index, int w, int h)
@@ -89,6 +87,7 @@ void PerceptionNode::UpdateShm()
 
 void PerceptionNode::Run()
 {
+
   cv::Mat image;
   std::vector<Object> objs;
   //ikid_msgs::ObjectList list2pub;
@@ -98,6 +97,7 @@ void PerceptionNode::Run()
     cap_ >> image;
     objs.clear();
     image_proc_->Detect(image, objs);
+    observation_->Observe(objs);
 
     /*
     list2pub.header.stamp = ::ros::Time::now();

@@ -30,7 +30,7 @@ namespace Perception
 class ImageProc
 {
 public:
-  ImageProc(const PerceptionOptions& options);
+  ImageProc(const ImageProcOptions& options);
 
   ~ImageProc();
 
@@ -47,7 +47,7 @@ public:
 
   //cv::VideoCapture cap_;
 
-  PerceptionOptions options_;
+  ImageProcOptions options_;
 
   //image_transport::ImageTransport it_;
 

@@ -16,9 +16,19 @@ namespace IKid
 namespace Perception
 {
 
-ImageProc::ImageProc(const PerceptionOptions& options)
+ImageProc::ImageProc(const ImageProcOptions& options)
     : options_(options)
 {
+  LOG(INFO) << "net_input_width  : " << options_.net_input_width;
+  LOG(INFO) << "net_input_height : " << options_.net_input_height;
+  LOG(INFO) << "topic            : " << options_.object_list_topic;
+  LOG(INFO) << "queue            : " << options_.object_list_publisher_queue_size;
+
+  LOG(INFO) << "net_prototxt     : " << options_.net_prototxt;
+  LOG(INFO) << "model_file       : " << options_.model_file;
+  LOG(INFO) << "object_thresh    : " << options_.object_thresh;
+  LOG(INFO) << "nms_thresh       : " << options_.nms_thresh;
+  LOG(INFO) << "hier_thresh      : " << options_.hier_thresh;
 #if 0
   if (options_.debug_mode)
   {

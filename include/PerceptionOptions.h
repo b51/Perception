@@ -31,14 +31,31 @@ namespace IKid
 namespace Perception
 {
 
-struct PerceptionOptions
+struct ObservationOptions
 {
-  bool debug_mode;
-  int log_level;
+  double ball_diameter;
+  double camera_focus;
 
-  int camera_index;
-  int image_width;
-  int image_height;
+  std::string tracking_frame;
+  double lookup_transform_timeout_sec;
+};
+
+inline ObservationOptions CreateObservationOptions(
+    cartographer::common::LuaParameterDictionary* const lua_parameter_dictionary)
+{
+  ObservationOptions options;
+  options.ball_diameter =
+      lua_parameter_dictionary->GetDouble("ball_diameter");
+  options.ball_diameter =
+      lua_parameter_dictionary->GetDouble("camera_focus");
+
+      lua_parameter_dictionary->GetString("tracking_frame");
+      lua_parameter_dictionary->GetString("lookup_transform_timeout_sec");
+  return options;
+}
+
+struct ImageProcOptions
+{
   std::string object_list_topic;
   int object_list_publisher_queue_size;
 
@@ -55,18 +72,10 @@ struct PerceptionOptions
   int log_interval;
 };
 
-namespace carto = cartographer;
-
-inline PerceptionOptions CreatePerceptionOptions(carto::common::LuaParameterDictionary* const
-                                  lua_parameter_dictionary)
+inline ImageProcOptions CreateImageProcOptions(
+    cartographer::common::LuaParameterDictionary* const lua_parameter_dictionary)
 {
-  PerceptionOptions options;
-
-  options.debug_mode = lua_parameter_dictionary->GetBool("debug_mode");
-  options.log_level = lua_parameter_dictionary->GetInt("log_level");
-  options.camera_index = lua_parameter_dictionary->GetInt("camera_index");
-  options.image_width = lua_parameter_dictionary->GetInt("image_width");
-  options.image_height = lua_parameter_dictionary->GetInt("image_height");
+  ImageProcOptions options;
 
   options.net_input_width = lua_parameter_dictionary->GetInt("net_input_width");
   options.net_input_height = lua_parameter_dictionary->GetInt("net_input_height");
@@ -76,8 +85,43 @@ inline PerceptionOptions CreatePerceptionOptions(carto::common::LuaParameterDict
   options.object_thresh = lua_parameter_dictionary->GetDouble("object_thresh");
   options.nms_thresh = lua_parameter_dictionary->GetDouble("nms_thresh");
   options.hier_thresh = lua_parameter_dictionary->GetDouble("hier_thresh");
-
   options.log_interval = lua_parameter_dictionary->GetInt("log_interval");
+
+  return options;
+}
+
+struct PerceptionOptions
+{
+  bool debug_mode;
+  int log_level;
+
+  int camera_index;
+  int image_width;
+  int image_height;
+
+  ImageProcOptions image_proc_options;
+  ObservationOptions observation_options;
+};
+
+namespace carto = cartographer;
+
+inline PerceptionOptions CreatePerceptionOptions(carto::common::LuaParameterDictionary* const
+                                  lua_parameter_dictionary)
+{
+  PerceptionOptions options;
+
+  options.debug_mode = lua_parameter_dictionary->GetBool("debug_mode");
+  options.log_level = lua_parameter_dictionary->GetInt("log_level");
+
+  options.camera_index = lua_parameter_dictionary->GetInt("camera_index");
+  options.image_width = lua_parameter_dictionary->GetInt("image_width");
+  options.image_height = lua_parameter_dictionary->GetInt("image_height");
+
+  options.image_proc_options =
+      CreateImageProcOptions(lua_parameter_dictionary->GetDictionary("image_proc").get());
+
+  options.observation_options =
+      CreateObservationOptions(lua_parameter_dictionary->GetDictionary("observation").get());
   return options;
 }
 
