@@ -83,22 +83,66 @@ bool PerceptionNode::CameraInit(int index, int w, int h)
 
 void PerceptionNode::UpdateShm()
 {
+  // set object detected false
+  for (const auto& vision_key: vision_keys)
+  {
+    double* pr = vision_shm_set_ptr(vision_key.first, vision_key.second.size);
+    *pr = 0.;
+  }
+
+  for (int i = 0; i < objs_.size(); i++)
+  {
+    int size = vision_keys[ball_detection_key].size;
+    double v[size] = {1 // detected
+                     // bounding box
+                     , double(objs_[i].x)
+                     , double(objs_[i].y)
+                     , double(objs_[i].width)
+                     , double(objs_[i].height)
+                     // 3d position
+                     , positions_[i].x()
+                     , positions_[i].y()
+                     , positions_[i].z()};
+    double *pr;
+    switch (objs_[i].label)
+    {
+      case BALL:
+      {
+        pr = vision_shm_set_ptr(ball_detection_key, size);
+        break;
+      }
+      case GOAL_POST:
+        pr = vision_shm_set_ptr(goal_detection_key, size);
+        break;
+      case PENALTY_SPOT:
+        break;
+      case TEAMMATE:
+        break;
+      case OPPONENT_ROBOT:
+        break;
+      default:
+        break;
+    }
+    for (int j = 0; j < size; j++)
+      *(pr+j) = v[j];
+  }
 }
 
 void PerceptionNode::Run()
 {
 
   cv::Mat image;
-  std::vector<Object> objs;
   //ikid_msgs::ObjectList list2pub;
 
   while (node_handle_.ok())
   {
-    cap_ >> image;
-    objs.clear();
-    image_proc_->Detect(image, objs);
-    observation_->Observe(objs);
+    objs_.clear();
+    positions_.clear();
 
+    cap_ >> image;
+    image_proc_->Detect(image, objs_);
+    observation_->Observe(objs_, positions_);
+    UpdateShm();
     /*
     list2pub.header.stamp = ::ros::Time::now();
     list2pub.objects.clear();

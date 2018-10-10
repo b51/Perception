@@ -19,6 +19,8 @@ OBSERVATION =
 {
   ball_diameter = 0.15,
   camera_focus = 456,
+  camera_center_x = 322,
+  camera_center_y = 244,
   tracking_frame = "base_link",
   lookup_transform_timeout_sec = 1.0,
 }

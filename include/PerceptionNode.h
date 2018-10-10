@@ -53,6 +53,8 @@ private:
   cv::VideoCapture cap_;
   std::unique_ptr<ImageProc> image_proc_;
   std::unique_ptr<Observation> observation_;
+  std::vector<Object> objs_;
+  std::vector<Eigen::Vector3d> positions_;
 };
 
 } // namespace Perception

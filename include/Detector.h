@@ -34,6 +34,16 @@ typedef struct
   float score;
 } Object;
 
+enum
+{
+  BALL,
+  GOAL_POST,
+  PENALTY_SPOT,
+  TEAMMATE,
+  OPPONENT_ROBOT,
+  OBJECT_END
+};
+
 class Detector
 {
 public:

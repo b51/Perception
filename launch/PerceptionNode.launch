@@ -10,6 +10,12 @@
 -->
 
 <launch>
+  <param name="robot_description"
+    textfile="$(find PerceptionNode)/urdf/ikid.urdf" />
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher"
+    type="robot_state_publisher" />
+
   <node name="PerceptionNode" pkg="PerceptionNode"
       type="PerceptionNode" args="
           -configuration_directory $(find PerceptionNode)/config

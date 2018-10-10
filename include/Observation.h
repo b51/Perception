@@ -31,7 +31,7 @@ class Observation
 public:
   Observation(const ObservationOptions& options, tf2_ros::Buffer* const tf_buffer);
   ~Observation();
-  void Observe(std::vector<Object>& objs);
+  void Observe(std::vector<Object>& objs, std::vector<Eigen::Vector3d>& positions);
 
 private:
   const TfBridge tf_bridge_;

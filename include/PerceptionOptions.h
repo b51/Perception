@@ -34,7 +34,9 @@ namespace Perception
 struct ObservationOptions
 {
   double ball_diameter;
-  double camera_focus;
+  int camera_focus;
+  int camera_center_x;
+  int camera_center_y;
 
   std::string tracking_frame;
   double lookup_transform_timeout_sec;
@@ -46,11 +48,17 @@ inline ObservationOptions CreateObservationOptions(
   ObservationOptions options;
   options.ball_diameter =
       lua_parameter_dictionary->GetDouble("ball_diameter");
-  options.ball_diameter =
-      lua_parameter_dictionary->GetDouble("camera_focus");
+  options.camera_focus =
+      lua_parameter_dictionary->GetInt("camera_focus");
+  options.camera_center_x =
+      lua_parameter_dictionary->GetInt("camera_center_x");
+  options.camera_center_y =
+      lua_parameter_dictionary->GetInt("camera_center_y");
 
+  options.tracking_frame =
       lua_parameter_dictionary->GetString("tracking_frame");
-      lua_parameter_dictionary->GetString("lookup_transform_timeout_sec");
+  options.lookup_transform_timeout_sec =
+      lua_parameter_dictionary->GetDouble("lookup_transform_timeout_sec");
   return options;
 }
 
