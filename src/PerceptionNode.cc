@@ -94,15 +94,15 @@ void PerceptionNode::UpdateShm()
   {
     int size = vision_keys[ball_detection_key].size;
     double v[size] = {1 // detected
+                     // 3d position
+                     , positions_[i].x()
+                     , positions_[i].y()
+                     , positions_[i].z()
                      // bounding box
                      , double(objs_[i].x)
                      , double(objs_[i].y)
                      , double(objs_[i].width)
-                     , double(objs_[i].height)
-                     // 3d position
-                     , positions_[i].x()
-                     , positions_[i].y()
-                     , positions_[i].z()};
+                     , double(objs_[i].height)};
     double *pr;
     switch (objs_[i].label)
     {
