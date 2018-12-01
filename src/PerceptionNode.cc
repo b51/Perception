@@ -56,13 +56,7 @@ void PerceptionNode::Init()
                << " height: " << options_.image_height;
   /* Init ImageProc */
   image_proc_ = cartographer::common::make_unique<ImageProc>(options_.image_proc_options);
-
-  /* Init Observation */
-  constexpr double kTfBufferCacheTimeInSeconds = 10.;
-  tf2_ros::Buffer tf_buffer{::ros::Duration(kTfBufferCacheTimeInSeconds)};
-  tf2_ros::TransformListener tf(tf_buffer);
-
-  observation_ = cartographer::common::make_unique<Observation>(options_.observation_options, &tf_buffer);
+  image_proc_->Init();
 }
 
 bool PerceptionNode::CameraInit(int index, int w, int h)
@@ -115,21 +109,35 @@ void PerceptionNode::UpdateShm()
         pr = vision_shm_set_ptr(goal_detection_key, size);
         break;
       case PENALTY_SPOT:
+        pr = vision_shm_set_ptr(spot_detection_key, size);
         break;
       case TEAMMATE:
+        pr = vision_shm_set_ptr(teammate_detection_key, size);
         break;
       case OPPONENT_ROBOT:
+        pr = vision_shm_set_ptr(opponent_detection_key, size);
         break;
       default:
         break;
     }
-    for (int j = 0; j < size; j++)
-      *(pr+j) = v[j];
+    if (objs_[i].label >= BALL && objs_[i].label < OBJECT_END)
+    {
+      for (int j = 0; j < size; j++)
+        *(pr+j) = v[j];
+    }
   }
 }
 
 void PerceptionNode::Run()
 {
+  /* Init Observation */
+  // Move tf_buffer from Init to here for tf_buffer will be used in observation_,
+  // and if construct tf_buffer in Init(), its lifetime will end when Init() done and
+  // the pointer &tf_buffer will have no object that lead to error.
+  constexpr double kTfBufferCacheTimeInSeconds = 10.;
+  tf2_ros::Buffer tf_buffer{::ros::Duration(kTfBufferCacheTimeInSeconds)};
+  tf2_ros::TransformListener tf(tf_buffer);
+  observation_ = cartographer::common::make_unique<Observation>(options_.observation_options, &tf_buffer);
 
   cv::Mat image;
   //ikid_msgs::ObjectList list2pub;

@@ -27,6 +27,7 @@ OBSERVATION =
 
 IMAGE_PROC =
 {
+  publisher_queue_size = 0,
   net_input_width = 128,
   net_input_height = 128,
 

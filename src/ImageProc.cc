@@ -81,55 +81,47 @@ void ImageProc::ListToRosMsg(const std::vector<Object>& in, ikid_msgs::ObjectLis
 
 void ImageProc::Detect(cv::Mat& image, std::vector<Object>& objs)
 {
-  //ikid_msgs::ObjectList list2pub;
-
 #ifdef DEBUG
   int count = 0;
   auto start = std::chrono::high_resolution_clock::now();
 #endif
 
-  //while (node_handle_.ok())
-  {
-    //image = cv::imread("/home/compiler/Pictures/Lenna.png");
+  objs.clear();
+  detector_->Detect(image, objs);
 
 #ifdef DEBUG
-    count++;
-    auto finish = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> elapsed = finish - start;
-    if (elapsed.count() > options_.log_interval)
-    {
-      LOG(INFO) << "fps: " << count/elapsed.count();
-      start = finish;
-      count = 0;
-    }
-
-    for (auto obj: objs)
-    {
-      int label2color = obj.label % 255;
-      cv::Scalar color(label2color, 0, label2color);
-      cv::rectangle(image, cv::Rect(obj.x, obj.y, obj.width, obj.height), color, 2);
-      cv::putText(image, std::to_string(obj.label), cv::Point(obj.x, obj.y)
-                , CV_FONT_HERSHEY_PLAIN, 1
-                , color);
-      cv::putText(image, std::to_string(obj.score).substr(0, 3), cv::Point(obj.x+obj.width, obj.y)
-                , CV_FONT_HERSHEY_PLAIN, 1
-                , color);
-    }
-
-    cv::imshow("predict", image);
-    cv::waitKey(5);
-#endif
-
-    objs.clear();
-    detector_->Detect(image, objs);
-
-    /*
-    list2pub.header.stamp = ::ros::Time::now();
-    list2pub.objects.clear();
-    ListToRosMsg(objs, &list2pub);
-    object_list_publisher_.publish(list2pub);
-    */
+  count++;
+  auto finish = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double> elapsed = finish - start;
+  if (elapsed.count() > options_.log_interval)
+  {
+    LOG(INFO) << "fps: " << count/elapsed.count();
+    start = finish;
+    count = 0;
   }
+
+  for (auto obj: objs)
+  {
+    int label2color = obj.label % 255;
+    cv::Scalar color(label2color, 0, label2color);
+    cv::rectangle(image, cv::Rect(obj.x, obj.y, obj.width, obj.height), color, 2);
+    cv::putText(image, std::to_string(obj.label), cv::Point(obj.x, obj.y)
+              , CV_FONT_HERSHEY_PLAIN, 1
+              , color);
+    cv::putText(image, std::to_string(obj.score).substr(0, 3), cv::Point(obj.x+obj.width, obj.y)
+              , CV_FONT_HERSHEY_PLAIN, 1
+              , color);
+  }
+
+  cv::imshow("predict", image);
+  cv::waitKey(5);
+#endif
+    /*
+  list2pub.header.stamp = ::ros::Time::now();
+  list2pub.objects.clear();
+  ListToRosMsg(objs, &list2pub);
+  object_list_publisher_.publish(list2pub);
+  */
 }
 
 } // namespace Perception

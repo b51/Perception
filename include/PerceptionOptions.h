@@ -85,6 +85,8 @@ inline ImageProcOptions CreateImageProcOptions(
 {
   ImageProcOptions options;
 
+  options.object_list_publisher_queue_size = lua_parameter_dictionary->GetInt("publisher_queue_size");
+
   options.net_input_width = lua_parameter_dictionary->GetInt("net_input_width");
   options.net_input_height = lua_parameter_dictionary->GetInt("net_input_height");
 
