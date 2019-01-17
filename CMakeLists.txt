@@ -11,6 +11,8 @@ set(IMAGE_PROC_VERSION ${IMAGE_PROC_MAJOR_VERSION}.${IMAGE_PROC_MINOR_VERSION}.$
 set(IMAGE_PROC_SOVERSION ${IMAGE_PROC_MAJOR_VERSION}.${IMAGE_PROC_MINOR_VERSION}
 )
 
+option(USE_GPU "Use GPU as image inference" ON)
+
 #########################################################################
 if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Release")
@@ -44,7 +46,7 @@ find_package(cartographer REQUIRED)
 
 include("${CARTOGRAPHER_CMAKE_DIR}/functions.cmake")
 
-set(BUILD_SHARED_LIBS OFF)
+set(BUILD_SHARED_LIBS ON)
 option(BUILD_GRPC "build features that require Cartographer gRPC support" false)
 google_initialize_cartographer_project()
 google_enable_testing()
@@ -54,13 +56,17 @@ include(FindPkgConfig)
 find_package(LuaGoogle REQUIRED)
 find_package(Ceres REQUIRED)
 
-set(CUDA_root "/usr/local/cuda")
-set(CUDA_INCLUDE_DIR ${CUDA_root}/include)
-find_library(CUDART cudart "${CUDA_root}/lib64")
-find_library(CUBLAS cublas "${CUDA_root}/lib64")
-find_library(CURAND curand "${CUDA_root}/lib64")
-find_library(CUDNN cudnn "${CUDA_root}/lib64")
-set(CUDA_LIBS ${CUDART} ${CUBLAS} ${CURAND} ${CUDNN})
+if (USE_GPU)
+  add_definitions(-DGPU)
+  add_definitions(-DCUDNN)
+  set(CUDA_root "/usr/local/cuda")
+  set(CUDA_INCLUDE_DIR ${CUDA_root}/include)
+  find_library(CUDART cudart "${CUDA_root}/lib64")
+  find_library(CUBLAS cublas "${CUDA_root}/lib64")
+  find_library(CURAND curand "${CUDA_root}/lib64")
+  find_library(CUDNN cudnn "${CUDA_root}/lib64")
+  set(CUDA_LIBS ${CUDART} ${CUBLAS} ${CURAND} ${CUDNN})
+endif(USE_GPU)
 
 set(Darknet_LIB
   ${PROJECT_SOURCE_DIR}/lib/libdarknet.so
@@ -124,7 +130,6 @@ target_link_libraries(${PROJECT_NAME}
   ${Darknet_LIB}
   ${CUDA_LIBS}
 )
-
 
 #############
 ## Install ##

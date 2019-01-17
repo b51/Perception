@@ -8,14 +8,14 @@
 #define SECRET_NUM -1234
 extern int gpu_index;
 
-#if 1
+#ifdef GPU
     #define BLOCK 512
 
     #include "cuda_runtime.h"
     #include "curand.h"
     #include "cublas_v2.h"
 
-    #if 1
+    #ifdef CUDNN
     #include "cudnn.h"
     #endif
 #endif
@@ -323,7 +323,7 @@ struct layer{
 
     size_t workspace_size;
 
-#if 1
+#ifdef GPU
     int *indexes_gpu;
 
     float *z_gpu;
@@ -398,7 +398,7 @@ struct layer{
     float * rand_gpu;
     float * squared_gpu;
     float * norms_gpu;
-#if 1
+#ifdef GPU
     cudnnTensorDescriptor_t srcTensorDesc, dstTensorDesc;
     cudnnTensorDescriptor_t dsrcTensorDesc, ddstTensorDesc;
     cudnnTensorDescriptor_t normTensorDesc;
@@ -476,7 +476,7 @@ typedef struct network{
     int index;
     float *cost;
 
-#if 1
+#ifdef GPU
     float *input_gpu;
     float *truth_gpu;
     float *delta_gpu;
@@ -602,7 +602,7 @@ void normalize_cpu(float *x, float *mean, float *variance, int batch, int filter
 void softmax(float *input, int n, float temp, int stride, float *output);
 
 int best_3d_shift_r(image a, image b, int min, int max);
-#if 1
+#ifdef GPU
 void axpy_gpu(int N, float ALPHA, float * X, int INCX, float * Y, int INCY);
 void fill_gpu(int N, float ALPHA, float * X, int INCX);
 void scal_gpu(int N, float ALPHA, float * X, int INCX);
